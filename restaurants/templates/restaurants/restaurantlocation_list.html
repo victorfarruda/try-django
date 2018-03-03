@@ -5,6 +5,10 @@
 {% block content %}
 <h1>Restaurant List</h1>
 {% for obj in object_list %}
-    <li>{{ obj.name }} {{ obj.location }} {{ obj.category }} {{ obj.timestamp }} {{ obj.updated }}</li>
+    <li>
+        <a href="{{obj.pk}}">{{ obj }}</a>
+        <br/>
+        {{ obj.name }} {{ obj.location }} {{ obj.category }} {{ obj.timestamp }} {{ obj.updated }}
+    </li>
 {% endfor %}
 {% endblock content %}
