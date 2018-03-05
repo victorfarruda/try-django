@@ -11,10 +11,15 @@ def restaurant_createview(request):
     form = RestaurantLocationCreateForm(request.POST or None)
     errors = None
     if form.is_valid():
-        # pre_save
-        form.save()
-        # post_save
-        return HttpResponseRedirect("/restaurants/")
+        if request.user.is_authenticated():
+            instance = form.save(commit = False)
+            # pre_save
+            instance.owner = request.user
+            instance.save()
+            # post_save
+            return HttpResponseRedirect("/restaurants/")
+        else:
+            return HttpResponseRedirect("/login/")
     if form.errors:
         errors = form.errors
     template_name = 'restaurants/form.html'
