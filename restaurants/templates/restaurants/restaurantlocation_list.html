@@ -6,7 +6,7 @@
 <h1>Restaurant List</h1>
 {% for obj in object_list %}
     <li>
-        <a href="{{ obj.slug }}">{{ obj }}</a>
+        <a href="{{ obj.get_absolute_url }}">{{ obj }}</a>
         <br/>
         {{ obj.name }} {{ obj.location }} {{ obj.category }} {{ obj.timestamp }} {{ obj.updated }}
     </li>
