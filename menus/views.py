@@ -36,7 +36,7 @@ class ItemCreateView(LoginRequiredMixin, CreateView):
         return context
 
 class ItemUpdateView(LoginRequiredMixin, UpdateView):
-    template_name = 'form.html'
+    template_name = 'menus/detail-update.html'
     form_class = ItemForm
 
     def get_form_kwargs(self):
