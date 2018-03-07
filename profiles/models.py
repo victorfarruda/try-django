@@ -27,6 +27,10 @@ class Profile(models.Model):
 
     objects = ProfileManager()
 
+    def send_activation_email(self):
+        print('Activation')
+        pass
+
     def __str__(self):
         return self.user.username
 
