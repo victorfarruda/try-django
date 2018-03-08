@@ -20,7 +20,8 @@ from django.contrib.auth.views import LoginView, LogoutView
 
 from django.views.generic import TemplateView
 
-from profiles.views import ProfileFollowToggle, RegisterView
+from profiles.views import ProfileFollowToggle, RegisterView, activate_user_view
+
 from menus.views import HomeView
 
 urlpatterns = [
@@ -28,6 +29,7 @@ urlpatterns = [
     url(r'^$', HomeView.as_view(), name="home"),
     url(r'^about/$', TemplateView.as_view(template_name='about.html'), name="about"),
     url(r'^register/$', RegisterView.as_view(), name='register'),
+    url(r'^activate/(?P<code>[a-z0-9].*)/$', activate_user_view, name='activate'),   
     url(r'^logout/$', LogoutView.as_view(), name='logout'),
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^profile-follow/',ProfileFollowToggle.as_view(), name='follow'),

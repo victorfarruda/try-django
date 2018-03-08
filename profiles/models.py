@@ -1,7 +1,9 @@
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
-
+from .utils import code_generator
+from django.core.mail import send_mail
+from django.core.urlresolvers import reverse
 
 User = settings.AUTH_USER_MODEL
 
@@ -18,18 +20,38 @@ class ProfileManager(models.Manager):
         return profile_, is_following
 
 class Profile(models.Model):
-    user      = models.OneToOneField(User)
-    followers = models.ManyToManyField(User, related_name='is_following', blank=True)
+    user           = models.OneToOneField(User)
+    followers      = models.ManyToManyField(User, related_name='is_following', blank=True)
     # following = models.ManyToManyField(User, related_name='following', blank=True)
-    activated = models.BooleanField(default=False)
-    timestamp = models.DateTimeField(auto_now_add = True)
-    updated   = models.DateTimeField(auto_now = True)
+    activation_key = models.CharField(max_length=120, null=True, blank=True)
+    activated      = models.BooleanField(default=False)
+    timestamp      = models.DateTimeField(auto_now_add = True)
+    updated        = models.DateTimeField(auto_now = True)
 
     objects = ProfileManager()
 
     def send_activation_email(self):
         print('Activation')
-        pass
+        if not self.activated:
+            self.activation_key = code_generator()
+            self.save()
+            # path_ = reverse()
+            path_ = reverse('activate', kwargs={"code": self.activation_key})
+            subject = 'Activate Account'
+            from_mail = settings.DEFAULT_FROM_EMAIL
+            message = f'Activate your account here {path_}'
+            recipient_list = ['victorf_arruda@outlook.com']
+            html_message = f'<p>Activate your account here {path_}<p/>'
+            print(html_message)
+            # sent_mail = send_mail(
+            #     subject,
+            #     message,
+            #     from_mail,
+            #     recipient_list,
+            #     fail_silently=False,
+            #     html_message=html_message)
+            sent_mail = False
+            return sent_mail
 
     def __str__(self):
         return self.user.username
